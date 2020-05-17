@@ -1,0 +1,86 @@
+var express = require('express');
+const app = express()
+const path = require('path')
+const http = require('http').createServer(app);
+const formatMessage = require('./backend/helper/formatMessage')
+const Users = require('./backend/api/users');
+
+var io = require('socket.io')(http);
+
+app.get('/', (req, res) => {
+  res.send('<h1>Hello world</h1>');
+});
+
+// When we run the server our public file will also be ran
+const publicDirectoryPath = path.join(__dirname, './dist')
+
+app.use(express.static(publicDirectoryPath))
+
+
+
+const serverBotName = "INDI";
+
+// run when a client connects
+io.on('connection', socket => {
+
+        socket.on("JOIN_ROOM", ({username,room})=>{
+
+            const user = Users.addUser(socket.id, username,room);
+            socket.join(user.room);
+            console.log(` ${user.username} has joined ${user.room} as new connection`)
+
+
+            // Welcome User
+            socket.emit("CONN_COM_OVER",{msgType: "welcome_user",msg:formatMessage(serverBotName,`Hello ${user.username}, Welcome to ${user.room}-INDIchat`)});
+
+            // Broadcast to other users about new joined user
+            socket.broadcast.to(user.room).emit("CONN_COM_OVER", {msgType: "new_user",msg:formatMessage(serverBotName,` ${user.username} is joined ${user.room}-INDIchat`)});
+
+            // Send users and room info
+            io.to(user.room).emit('CONN_COM_OVER', {msgType: "room_info",msg:{room: user.room,users: Users.getRoomUsers(user.room)}});  
+
+        });
+ 
+  
+
+    // getting communication messages
+    socket.on("CONN_COM", (msg)=>{
+        console.log(msg);
+
+    });
+
+
+
+    // getting chat messages
+    socket.on("ROOM_MESSAGE", (msg)=>{
+        const user = Users.getCurrentUser(socket.id);
+        console.log(msg);
+
+        io.to(user.room).emit("ROOM_MESSAGE",formatMessage(user.username,msg));
+    });
+
+
+
+        socket.on("disconnect", ()=>{
+            
+            const user = Users.removeUser(socket.id);
+            
+            if (user) {
+                console.log("user {} is disconnected".format(user.username))
+                io.to(user.room).emit('ROOM_MESSAGE',formatMessage(serverBotName, `${user.username} has left the chat`));
+        
+                // Send users and room info
+                io.to(user.room).emit('CONN_COM_OVER', {msgType: "room_info",room: user.room,users: Users.getRoomUsers(user.room)});  
+
+                }
+        });
+
+})
+
+
+
+
+
+http.listen(3000, () => {
+  console.log('listening on *:3000');
+});
