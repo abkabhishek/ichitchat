@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import App from './App.vue'
+import axios from 'axios'
 // import {store} from './store/store'
 
 
@@ -11,6 +12,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
+Vue.prototype.$http = axios
 
 
 

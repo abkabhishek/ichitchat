@@ -20,7 +20,11 @@
             <input v-model="username" type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username">
             <small id="usernameHelp" class="form-text text-muted">We never store your data. Its a secure App</small>
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+          <div>
+            <b-badge variant="info">{{usernameInfoMessage}}</b-badge>
+          </div>
+          <button v-if="usernameAvailable" type="submit" class="btn btn-primary">Login</button>
+          <a v-else v-on:click="checkUsername" class="btn btn-primary m-1 text-light">Check Availability</a>
         </form>
 
       </div>
@@ -32,16 +36,32 @@
 import Vue from 'vue'
 export default Vue.extend({
     name:"LoginForm",
+    props:["usernameAvailable","showMsg"],
     data(){
         return {
             username:"",
-            room:"Game"
+            room:"Game",
+            usernameInfoMessage:"First check Username Availability"
 
         }
+    },
+    watch:{
+      showMsg:function(val){
+        
+          this.usernameInfoMessage = val
+      }
     },
     methods:{
         submitForm: function(){
             this.$emit("post-login",{username:this.username,room:this.room})
+        },
+
+        checkUsername: function(){
+          if (this.username!=""){
+            this.$emit("check-login",{username:this.username})
+          }else{
+            this.usernameInfoMessage="Enter Username first"
+          }
         }
     }
 

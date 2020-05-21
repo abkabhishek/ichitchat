@@ -2,7 +2,8 @@
   <div id="app" class="container-fluid">
     <NavBar v-if="loginSuccess" v-bind:username="username" v-bind:room="room" :numberOfUsers="numOfUsers" v-on:sign-out="signOut" />
     <ChatRoom v-if="loginSuccess"  :messages="messages" v-on:send-message="sendMessage" :roomUsers="roomUsers"/>
-    <LoginForm v-else v-on:post-login="postLogin"/>
+    <LoginForm v-else v-on:post-login="postLogin" v-on:check-login="checkLogin"   :usernameAvailable="usernameAvailable" :showMsg="showMsg"/>
+    
     <Footer />
     
   </div>
@@ -35,22 +36,30 @@ export default {
       socket : undefined,
       messages: [],
       roomUsers :{},
-      numOfUsers:0
+      numOfUsers:0,
+      existingUserFlag :false,
+      usernameAvailable:false,
+      showMsg:"First check Username Availability"
     }
   },
   methods:{
-    postLogin(loginData){
+    async postLogin(loginData){
       this.socket = io.connect("http://localhost:3000")
       this.username = loginData.username
       this.room= loginData.room
-      this.loginSuccess = true
       this.setupSocket()
       this.connServer("Ping!")
-      this.joinRoom()
+      await this.joinRoom()
+      if (this.existingUserFlag){
+        this.existingUsers()
+      }else{
+        this.loginSuccess = true
+      }
+      
 
     },
     signOut(){
-      this.socket = undefined
+      this.socket.emit("LEAVE_ROOM", {username:this.username,room:this.room})
       this.username = ""
       this.room= ""
       this.loginSuccess = false
@@ -84,7 +93,7 @@ export default {
 
     updateRoomUsers(data){
       this.roomUsers = data
-      this.numOfUsers = data.users.length
+      this.numOfUsers = data.users.length || 0
     },
 
     connMessage(msg){
@@ -93,11 +102,12 @@ export default {
         this.messages.push(msg.msg)
         this.scrollToElement()
       }else if (msg.msgType =="room_info"){
-        this.updateRoomUsers(msg.msg)
         console.log("Conn Msg from server", JSON.stringify(msg))
+        this.updateRoomUsers(msg.msg)
       }
       
     },
+
 
     scrollToElement() {
             const els = this.$el.querySelectorAll('dl>div>dd');
@@ -106,6 +116,24 @@ export default {
                 el.scrollIntoView();
 
             }
+    },
+
+    checkLogin(data){
+      
+      const baseURI = 'http://localhost:3000/user/login/'+data["username"]
+      this.$http.get(baseURI)
+      .then((result) => {
+        if (result.data.message == "username is available"){
+          console.log("Username is available")
+          console.log(result.data)
+          this.usernameAvailable=true
+          this.showMsg = "Username is available, please Login"
+        }else{
+          console.log("Username is not available")
+          console.log(result.data)
+          this.showMsg = "Username is not available, try something else"
+        }
+      })
     }
 
   }
