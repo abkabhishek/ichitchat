@@ -3,15 +3,16 @@
 
         <!-- Chat Users -->
 
+        
+        <div class="col-sm">
+          <ChatMessages v-bind:messages="messages" />
+          <ChatForm class="fixed-bottom" v-on:send-message="sendMessage"/>
+        </div>
         <div class="col-sm-2">
           <div id="users-list" class="list-group">
             <span class="list-group-item border border-primary">Users</span>
             <a v-for="user in roomUsers.users" :key="user.id" class="list-group-item list-group-item-action">{{user.username}}</a>
           </div>
-        </div>
-        <div class="col-sm">
-          <ChatMessages v-bind:messages="messages" />
-          <ChatForm v-on:send-message="sendMessage"/>
         </div>
 
     </div>

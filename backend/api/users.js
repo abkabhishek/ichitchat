@@ -24,7 +24,7 @@ function removeUserByID(id) {
     let removed = users.splice(index, 1)
     return removed[0]
   }else{
-    console.log("Unable to find user by socket id",id)
+    // console.log("Unable to find user by socket id",id)
   }
 }
 

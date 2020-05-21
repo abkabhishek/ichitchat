@@ -2,7 +2,7 @@
               <!-- Message input box  -->
           <form id="chat-form" @submit.prevent="submitForm">
                 <div class="input-group">
-                    <input v-model="messageToSend" id="client_msg" type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Message" required autocomplete="off">
+                    <input ref="messageToSend" v-model="messageToSend" id="client_msg" type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Message" required autocomplete="off">
                     <div class="input-group-append">
                     <button id="send_msg" class="btn btn-outline-success"><i class="fas fa-paper-plane"></i> Send</button>
                     </div>
@@ -24,6 +24,8 @@ export default Vue.extend({
         submitForm: function(){
             this.$emit("send-message",this.messageToSend)
             this.messageToSend =""
+            this.$refs.messageToSend.focus()
+
         }
     }
     

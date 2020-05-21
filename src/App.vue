@@ -4,7 +4,7 @@
     <ChatRoom v-if="loginSuccess"  :messages="messages" v-on:send-message="sendMessage" :roomUsers="roomUsers"/>
     <LoginForm v-else v-on:post-login="postLogin" v-on:check-login="checkLogin"   :usernameAvailable="usernameAvailable" :showMsg="showMsg"/>
     
-    <Footer />
+    <Footer v-if="loginSuccess==false" />
     
   </div>
 </template>
@@ -44,6 +44,7 @@ export default {
   },
   methods:{
     async postLogin(loginData){
+      // this.socket = io.connect("http://localhost:3000")
       this.socket = io.connect()
       this.username = loginData.username
       this.room= loginData.room
@@ -102,7 +103,7 @@ export default {
         this.messages.push(msg.msg)
         this.scrollToElement()
       }else if (msg.msgType =="room_info"){
-        console.log("Conn Msg from server", JSON.stringify(msg))
+        // console.log("Conn Msg from server", JSON.stringify(msg))
         this.updateRoomUsers(msg.msg)
       }
       
@@ -119,18 +120,20 @@ export default {
     },
 
     checkLogin(data){
-      
+      // console.log(data)
+      // this.usernameAvailable=true
+      // this.showMsg = "Username is available, please Login"
       const baseURI = '/user/login/'+data["username"]
       this.$http.get(baseURI)
       .then((result) => {
         if (result.data.message == "username is available"){
-          console.log("Username is available")
-          console.log(result.data)
+          // console.log("Username is available")
+          // console.log(result.data)
           this.usernameAvailable=true
           this.showMsg = "Username is available, please Login"
         }else{
-          console.log("Username is not available")
-          console.log(result.data)
+          // console.log("Username is not available")
+          // console.log(result.data)
           this.showMsg = "Username is not available, try something else"
         }
       })

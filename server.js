@@ -61,8 +61,8 @@ io.on('connection', socket => {
 
     // getting Leave room messages
     socket.on("LEAVE_ROOM", (data)=>{
-        console.log("Leave Room Data")
-        console.log(data)
+        // console.log("Leave Room Data")
+        // console.log(data)
         const user = Users.removeUser(data.username);
             
             if (user) {
@@ -81,7 +81,7 @@ io.on('connection', socket => {
     // getting chat messages
     socket.on("ROOM_MESSAGE", (msg)=>{
         const user = Users.getCurrentUser(socket.id);
-        console.log(msg);
+        // console.log(msg);
 
         io.to(user.room).emit("ROOM_MESSAGE",formatMessage(user.username,msg));
     });
