@@ -2,7 +2,6 @@
     <div class="row d-flex justify-content-center p-5">
         <div class="col-sm-6 p-5 border border-primary">
 
-        <form @submit.prevent="submitForm">
 
           <div class="form-group">
             <label for="exampleFormControlSelect1">Room</label>
@@ -23,9 +22,8 @@
           <div>
             <b-badge variant="info">{{usernameInfoMessage}}</b-badge>
           </div>
-          <button v-if="usernameAvailable" type="submit" class="btn btn-primary">Login</button>
+          <button @click="submitForm" v-if="usernameAvailable" type="submit" class="btn btn-primary">Login</button>
           <a v-else v-on:click="checkUsername" class="btn btn-primary m-1 text-light">Check Availability</a>
-        </form>
 
       </div>
     </div>

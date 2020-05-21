@@ -44,7 +44,7 @@ export default {
   },
   methods:{
     async postLogin(loginData){
-      this.socket = io.connect("http://localhost:3000")
+      this.socket = io.connect()
       this.username = loginData.username
       this.room= loginData.room
       this.setupSocket()
@@ -120,7 +120,7 @@ export default {
 
     checkLogin(data){
       
-      const baseURI = 'http://localhost:3000/user/login/'+data["username"]
+      const baseURI = '/user/login/'+data["username"]
       this.$http.get(baseURI)
       .then((result) => {
         if (result.data.message == "username is available"){
