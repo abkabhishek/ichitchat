@@ -5,7 +5,7 @@ An Instant Private Chat application.
 Anyone can use this app to create instant username or show name then enter in a chat room to chat another person to share some secret info instantly. 
 
 ## Objective to create this app
- To create a poc project using Front end technologies.
+ To create a practice project using Full Stack technologies in JS
 
 
 ## Features
@@ -51,7 +51,6 @@ Anyone can use this app to create instant username or show name then enter in a 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
