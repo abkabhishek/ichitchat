@@ -5,15 +5,21 @@ const http = require('http').createServer(app);
 const formatMessage = require('./backend/helper/formatMessage')
 const Users = require('./backend/api/users');
 
+let MAX_USER_COUNT = 100
 
 var io = require('socket.io')(http);
 
 app.get('/user/login/:username', (req, res) => {
-    const existingUser = Users.findUser(req.params["username"])
-    if (existingUser){
-        res.send({"message":"username is already exist"})
+    const userCount = Users.getUserCount();
+    if (userCount > MAX_USER_COUNT){
+        res.send({"message":"user limit has reached, please wait to release slots."})
     }else{
-        res.send({"message":"username is available"})
+        const existingUser = Users.findUser(req.params["username"])
+        if (existingUser){
+            res.send({"message":"username is already exist"})
+        }else{
+            res.send({"message":"username is available"})
+        }
     }
 
 });
@@ -25,7 +31,7 @@ app.use(express.static(publicDirectoryPath))
 
 
 
-const serverBotName = "INDI";
+const serverBotName = "pChitChat";
 
 // run when a client connects
 io.on('connection', socket => {
@@ -39,10 +45,10 @@ io.on('connection', socket => {
 
 
                 // Welcome User
-                socket.emit("CONN_COM_OVER",{msgType: "welcome_user",msg:formatMessage(serverBotName,`Hello ${user.username}, Welcome to ${user.room}-INDIchat`)});
+                socket.emit("CONN_COM_OVER",{msgType: "welcome_user",msg:formatMessage(serverBotName,`Hello ${user.username}, Welcome to ${user.room}-pChitChat`)});
 
                 // Broadcast to other users about new joined user
-                socket.broadcast.to(user.room).emit("CONN_COM_OVER", {msgType: "new_user",msg:formatMessage(serverBotName,` ${user.username} is joined ${user.room}-INDIchat`)});
+                socket.broadcast.to(user.room).emit("CONN_COM_OVER", {msgType: "new_user",msg:formatMessage(serverBotName,` ${user.username} is joined ${user.room}-pChitChat`)});
 
                 // Send users and room info
                 io.to(user.room).emit('CONN_COM_OVER', {msgType: "room_info",msg:{room: user.room,users: Users.getRoomUsers(user.room)}});  

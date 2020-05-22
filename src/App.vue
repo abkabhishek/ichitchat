@@ -131,6 +131,8 @@ export default {
           // console.log(result.data)
           this.usernameAvailable=true
           this.showMsg = "Username is available, please Login"
+        }else if(result.data.message == "user limit has reached, please wait to release slots."){
+            this.showMsg = "user limit has reached, please wait to release slots. Please Support us to increase the capacity"
         }else{
           // console.log("Username is not available")
           // console.log(result.data)

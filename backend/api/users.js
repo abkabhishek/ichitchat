@@ -12,6 +12,11 @@ function findUser(username){
   return users.find(user=> {return user.username === username})
 }
 
+function getUserCount(){
+  return users.length;
+}
+
+
 // Get current user
 function getCurrentUser(id) {
   return users.find(user => {return user.id === id});
@@ -54,5 +59,6 @@ module.exports = {
   getRoomUsers,
   findUser,
   removeUserByID,
-  getAll
+  getAll,
+  getUserCount
 };

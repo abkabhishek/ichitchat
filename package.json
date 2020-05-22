@@ -1,6 +1,6 @@
 {
-  "name": "vue-chat-app",
-  "version": "0.1.0",
+  "name": "iChitChat",
+  "version": "0.1.1",
   "private": true,
   "main": "server.js",
   "author": "abkabhishek",

@@ -6,6 +6,8 @@
           <div class="form-group">
             <label for="exampleFormControlSelect1">Room</label>
             <select v-model="room" class="form-control" name="room" id="room">
+              <option>Girls Only</option>
+              <option>Boys Only</option>
               <option>Game</option>
               <option>Family</option>
               <option>Work</option>
@@ -38,7 +40,7 @@ export default Vue.extend({
     data(){
         return {
             username:"",
-            room:"Game",
+            room:"Friends",
             usernameInfoMessage:"First check Username Availability"
 
         }

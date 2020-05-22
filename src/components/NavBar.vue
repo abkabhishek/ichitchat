@@ -1,7 +1,7 @@
 <template>
                 <div>
                     <b-navbar toggleable="lg" type="light" variant="light">
-                        <b-navbar-brand href="#">INDIchat</b-navbar-brand>
+                        <b-navbar-brand id="LogoMain" href="#"/>
 
                         
                         <button type="button" id="room-name" class="btn btn-outline-primary m-1">
@@ -42,3 +42,16 @@ export default Vue.extend({
     }
 })
 </script>
+
+<style scoped>
+#LogoMain
+{
+    position: relative;
+    background: url(/images/Logo1.jpg);
+    width: 170px;
+    height: 60px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+</style>
