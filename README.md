@@ -30,20 +30,20 @@ Anyone can use this app to create instant username or show name then enter in a 
 
 * Enter desired username (showname) and check for availability for a session- it will be visible to other user.
 
-![Check Username ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo1.png?raw=true)
+![Check Username ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo1.png?raw=true | width=300)
 
 * If username is available, Login after selecting a room.
 
-![Login ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo2.png?raw=true)
+![Login ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo2.png?raw=true | width=300)
 
 
 * Chat with the available users. Any other person who joined the same room will be available to chat in the room.
 
-![Chat ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo3.png?raw=true)
+![Chat ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo3.png?raw=true | width=300)
 
 * From Menu, Logout from the room and user will be logout and created username will be deleted.
 
-![Logout ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo4.png?raw=true)
+![Logout ](https://github.com/abkabhishek/ichitchat/blob/master/public/images/demo4.png?raw=true | width=300)
 
 
 ## Contributing
